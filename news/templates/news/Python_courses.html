@@ -164,8 +164,8 @@
             <header>
                 <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
             </header>
-                <div class="card mb-3">
-                    <img src="{{ py_courses.image.url }}" class="card-img-top" style="width: 50%;">
+                <div class="card mb-3" style="width: 50%;">
+                    <img src="{{ py_courses.image.url }}" class="card-img-top">
                     <div class="card-body">
                     <h5 class="card-title">Курсы программирования Python</h5>
                     <p class="card-text"> Начни свой путь в IT с курса по Python!
@@ -183,7 +183,9 @@
                     </div>
                     </p>
                      <p class="card-text"><small class="text-muted"> Категория: {{ py_courses.category.name }} <br>Цена: {{ py_courses.price}}руб.</small></p>
-                    <button id="buyButton" type="button" class="btn btn-primary">Купить</button>
+                    <div class="text-left">
+                        <button id="buyButton" type="button" class="btn btn-primary">Купить</button>
+                    </div>
                 </div>
                     <script>
                         document.getElementById('buyButton').addEventListener('click', function() {
