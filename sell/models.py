@@ -4,7 +4,6 @@ class Category(models.Model):
 
     name = models.CharField("Наименование",max_length=100, unique=True)
 
-from django.db import models
 
 class Product(models.Model):
 
@@ -13,3 +12,4 @@ class Product(models.Model):
     text = models.TextField("Текст новости")
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     stock = models.IntegerField(default=0)
+    image = models.ImageField("Изображение", upload_to='products/images/', null=True, blank=True)
