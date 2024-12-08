@@ -20,3 +20,12 @@ class Article(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Author(models.Model):
+    name = models.CharField("Имя автора", max_length=100, unique=True)
+
+class Book(models.Model):
+    title = models.CharField("Название книги", max_length=200, unique=True)
+    authors = models.ManyToManyField(Author, related_name='books')
+    published_date = models.DateField("Дата публикации")

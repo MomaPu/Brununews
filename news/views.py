@@ -1,14 +1,13 @@
 from django.shortcuts import render
-from sell.models import Product
-
+from news.services import get_py_courses, get_3d_courses,get_marketing_courses
 def index(request):
     return render(request, 'news/index.html')
 
 
-def python_courses(request):
-    py_courses = Product.objects.filter(name="Программирование Python").first()
-    threed_courses = Product.objects.filter(name="3D-Дизайн").first()
-    marketing_courses = Product.objects.filter(name="Marketing").first()
+def get_all_courses(request):
+    py_courses = get_py_courses
+    threed_courses = get_3d_courses()
+    marketing_courses = get_marketing_courses()
     context = {
         'py_courses': py_courses,
         'threed_courses': threed_courses,
@@ -16,17 +15,13 @@ def python_courses(request):
     }
     return render(request,'news/Python_courses.html', context)
 def sell(request):
-    products = Product.objects.all()
-
-    py_courses = products[0] if products else None
-    threed_courses = products[1] if len(products) > 1 else None
-    marketing_courses = products[2] if len(products) > 2 else None
-
+    py_courses = get_py_courses
+    threed_courses = get_3d_courses()
+    marketing_courses = get_marketing_courses()
     context = {
         'py_courses': py_courses,
         'threed_courses': threed_courses,
         'marketing_courses': marketing_courses
     }
-
     return render(request, 'sell/courses.html', context)
 
