@@ -2,20 +2,31 @@ from datetime import date
 from django.test import TestCase
 from news.factories import ProductFactory, CategoryFactory, AuthorFactory, BookFactory
 from sell.models import Product, Category
-
-
+from news.services import get_py_courses
 class TestCourses(TestCase):
-    def test_create_product(self):
-        category = Category.objects.create(name="Тестовая категория")
-        product = Product.objects.create(
-            name="Тестовый продукт",
-            price=10.00,
-            text="Текст тестового продукта",
-            category=category,
-            stock=5
-        )
-        self.assertEqual(product.name, "Тестовый продукт")
-        self.assertEqual(product.price, 10.00)
+
+
+
+    def setUp(self):
+        self.category = Category.objects.create(name="Тестовая категория")
+
+        Product.objects.create(name="Курс по Python", price=100.00, text="Введение в Python", category=self.category,stock=10)
+        Product.objects.create(name="Продвинутый курс по Python", price=150.00, text="Углубленное изучение Python",category=self.category, stock=10)
+        Product.objects.create(name="Курс по Java", price=120.00, text="Введение в Java", category=self.category, stock=10)
+
+    def test_get_py_courses(self):
+
+        python_courses = get_py_courses()
+
+
+        self.assertIsNotNone(python_courses, "Функция get_py_courses вернула None")
+
+
+        print("Курсы по Python:", python_courses)
+
+
+        self.assertEqual(len(python_courses), 2)
+        self.assertTrue(all("Python" in course.name for course in python_courses))
 
 
 class ProductTests(TestCase):

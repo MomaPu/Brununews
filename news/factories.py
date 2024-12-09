@@ -49,7 +49,7 @@ class BookFactory(DjangoModelFactory):
             for author in extracted:
                 self.authors.add(author)
         else:
-            
+
             for _ in range(3):
                 author = AuthorFactory.create()
                 self.authors.add(author)
