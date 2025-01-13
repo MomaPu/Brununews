@@ -1,7 +1,13 @@
 from sell.models import Product
+from news.models import News
 def get_py_courses():
     return list(Product.objects.filter(name__icontains="Python"))
 def get_3d_courses():
-    threed_courses = Product.objects.filter(name="3D-Дизайн").first()
+    return list(Product.objects.filter(name="3D-Дизайн"))
 def get_marketing_courses():
-    marketing_courses = Product.objects.filter(name="Marketing").first()
+    return list(Product.objects.filter(name="Маркетинг"))
+
+def get_new_news():
+    return list(News.objects.all()[:3])
+def get_all_news():
+    return list(News.objects.all()[3:])

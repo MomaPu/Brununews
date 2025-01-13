@@ -29,3 +29,10 @@ class Book(models.Model):
     title = models.CharField("Название книги", max_length=200, unique=True)
     authors = models.ManyToManyField(Author, related_name='books')
     published_date = models.DateField("Дата публикации")
+
+class News(models.Model):
+    title = models.CharField("Название",max_length=64, unique=True)
+    text = models.TextField("Текст новости")
+    image = models.ImageField("Изображение", upload_to='products/images/', null=True, blank=True)
+    def __str__(self):
+        return self.title

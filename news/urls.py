@@ -1,9 +1,9 @@
 from django.urls import path
-from news.views import index,sell, get_all_courses
+from news.views import get_news,sell, get_all_courses
 from django.conf.urls.static import static
 from django.conf import settings
 
-urlpatterns = [path('index/', index),
+urlpatterns = [path('index/', get_news),
                path('courses/',sell),
                path('courses/py_course', get_all_courses)
     ]

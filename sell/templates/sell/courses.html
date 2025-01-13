@@ -17,6 +17,7 @@
             object-fit: cover;
         }
         body {
+            background-color: #EFECE1;
             display: flex;
             flex-direction: column;
         }
@@ -85,7 +86,7 @@
         }
 
         .new-list .card-body {
-            padding: 20px;
+            padding: 2px;
         }
 
         .new-list .card-title {
@@ -114,7 +115,7 @@
             }
 
         .main-content {
-                padding: 10px;
+                padding-left:0;
             }
         }
     </style>
@@ -173,7 +174,7 @@
                         <img src="https://i.vuzopedia.ru/storage/app/uploads/public/65c/22c/705/65c22c705c9c2245019039.webp" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Программирование Python</h5>
-                            <p class="card-text">Рассмотрим все аспекты программирования на языке Python. Научим создавать Web-Приложения и работать с базами данных. Осталось мест: {{ py_courses.stock }} </p>
+                            <p class="card-text">Рассмотрим все аспекты программирования на языке Python. Научим создавать Web-Приложения и работать с базами данных. Осталось мест: {{ py_courses.0.stock }} </p>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">С нуля!</li>
@@ -190,7 +191,7 @@
                         <img src="https://i.pinimg.com/originals/c9/dc/7a/c9dc7a816306b6ccf3d9256e304906bc.png" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">3D Дизайн</h5>
-                            <p class="card-text">Научим создавать проекты. Работа с разными рендерами, 3D мейкерами и многое другое в курсе! Осталось мест: {{ threed_courses.stock }}</p>
+                            <p class="card-text">Научим создавать проекты. Работа с разными рендерами, 3D мейкерами и многое другое в курсе! Осталось мест: {{ threed_courses.0.stock }}</p>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">С нуля!</li>
@@ -204,10 +205,10 @@
                 </div>
                 <div class="col-4">
                     <div class="card h-100">
-                        <img src="https://ucare.timepad.ru/2a59313c-a199-4f32-b5b3-137fa0bbdf2a/poster_event_1277964.jpg" class="card-img-top" alt="...">
+                            <img src="https://ucare.timepad.ru/2a59313c-a199-4f32-b5b3-137fa0bbdf2a/poster_event_1277964.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">Маркетинг</h5>
-                            <p class="card-text">Расскажем и научим всем аспектам маркетинга. Курс подходит как для начинающих, так и для повышения квалификации! Осталось мест: {{ marketing_courses.stock }}</p>
+                            <p class="card-text">Расскажем и научим всем аспектам маркетинга. Курс подходит как для начинающих, так и для повышения квалификации! Осталось мест: {{ marketing_courses.0.stock }}</p>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">С нуля!</li>
