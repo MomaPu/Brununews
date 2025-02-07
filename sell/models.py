@@ -16,3 +16,17 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class Reviews(models.Model):
+    article = models.ForeignKey('sell.Product', related_name='Отзыв', on_delete=models.CASCADE )
+    text = models.TextField('Текст отзыва')
+    user = models.ForeignKey('users.User', related_name='Отзыв', null = True, on_delete=models.SET_NULL)
+    is_anon = models.BooleanField(default = False)
+
+    def save(self, *args, **kwargs):
+        if self.user is None:
+            self.is_anon = True
+        return super().save(*args, **kwargs)
+    def __self__(self):
+        username = self.user.username if self.user is not None else 'Анонимный пользователь'
+        return f"{self.artice.title}/{self.user.username}"

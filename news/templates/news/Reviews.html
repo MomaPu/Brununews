@@ -1,0 +1,62 @@
+{% extends 'news/base.html' %}
+{% block main %}
+<header>
+    <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Бруноям.Отзывы</span></h1>
+</header>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="row d-flex justify-content-left">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+      <div class="card-body p-4">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="form-outline mb-4">
+            <select id="course" name="course" class="form-control">
+              <option value="">Выберите курс</option>
+              {% for course in courses %}
+                <option value="{{ course.id }}">{{ course.name }}</option>
+              {% endfor %}
+            </select>
+            <label class="form-label" for="course">Курс</label>
+          </div>
+          <div class="form-outline mb-4">
+            <input type="text" id="addANote" name="review" class="form-control" placeholder="Ваш отзыв..." />
+            <label class="form-label" for="addANote">Добавить отзыв</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Отправить отзыв</button>
+        </form>
+
+        {% for review in reviews %}
+          <div class="card mb-4">
+            <div class="card-body">
+              <p>{{ review.text }}</p>
+              <div class="d-flex justify-content-between">
+                <div class="d-flex flex-row align-items-center">
+                  <p class="small mb-0 ms-2">
+                    {% if review.user %}
+                      {{ review.user.username }}
+                    {% else %}
+                      Анонимный пользователь
+                    {% endif %}
+                  </p>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                  <p class="small text-muted mb-0">Курс: </p>
+                  <i class="far fa-thumbs-up mx-2 fa-xs text-body" style="margin-top: -0.16rem;"></i>
+                  <p class="small text-muted mb-0">{{ review.article.name }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -17,7 +17,7 @@
             object-fit: cover;
         }
         body {
-            background-color: #EFECE1;
+            background-color: #F3DEC4;
             display: flex;
             flex-direction: column;
         }
@@ -118,6 +118,12 @@
                 padding-left:0;
             }
         }
+        .floating-button {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
@@ -137,6 +143,7 @@
           <ul class="dropdown-menu dropdown-menu-dark">
             <li><a class="dropdown-item" href="#">Курсы</a></li>
             <li><a class="dropdown-item" href="#">Преподаватели</a></li>
+            <li><a class="dropdown-item" href="../reviews">Отзывы</a></li>
           </ul>
         </li>
       </ul>
@@ -221,10 +228,40 @@
                     </div>
                 </div>
             </div>
+                <button type="button" class="btn btn-dark btn-sm floating-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Есть вопросы? Напиши нам!
+                </button>
+
         </main>
     </div>
 </div>
-
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Brunoyam.Поддержка</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'support_view' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Ваша почта:</label>
+                        <input type="text" class="form-control" id="recipient-name" name="recipient-name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Сообщение:</label>
+                        <textarea class="form-control" id="message-text" name="message-text" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-dark">Отправить сообщение</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <footer>
     © 2024 Brunoyam
 </footer>

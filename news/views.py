@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from news.services import get_py_courses, get_3d_courses,get_marketing_courses, get_new_news,get_all_news
 from django.core.paginator import Paginator
+from news.models import support
+from sell.models import Product, Reviews
+from django.contrib import messages
 
 def index(request):
     print("Courses fetched:")
@@ -47,3 +50,38 @@ def get_news(request):
         'page_obj': page_obj
     }
     return render(request,'news/index.html',context)
+def support_view(request):
+    if request.method == 'POST':
+        mail = request.POST.get('recipient-name')
+        text = request.POST.get('message-text')
+
+        support.objects.create(mail=mail, text=text)
+
+    return render(request, 'news/support.html')
+
+
+def reviews(request):
+    success_message = ''
+    if request.method == 'POST':
+        course_id = request.POST.get('course')
+        review_text = request.POST.get('review')
+
+        if course_id and review_text:
+            course = Product.objects.get(id=course_id)
+            user = request.user if request.user.is_authenticated else None
+
+            Reviews.objects.create(article=course, text=review_text, user=user)
+
+            success_message = 'Отзыв отправлен!'
+            messages.success(request, success_message)
+
+            return redirect('reviews')
+
+    courses = Product.objects.all()
+    reviews_list = Reviews.objects.select_related('article','user').all()
+
+    return render(request, 'news/reviews.html', {
+        'courses': courses,
+        'reviews': reviews_list,
+        'success_message': success_message
+    })

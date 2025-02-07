@@ -36,3 +36,7 @@ class News(models.Model):
     image = models.ImageField("Изображение", upload_to='products/images/', null=True, blank=True)
     def __str__(self):
         return self.title
+
+class support(models.Model):
+    mail = models.TextField("Почта", max_length=64)
+    text = models.TextField("Текст сообщения  ")
