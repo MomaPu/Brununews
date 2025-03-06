@@ -2,31 +2,49 @@ from datetime import date
 from django.test import TestCase
 from news.factories import ProductFactory, CategoryFactory, AuthorFactory, BookFactory
 from sell.models import Product, Category
-from news.services import get_py_courses
+from news.services import get_py_courses, create_review, get_courses, get_reviews_list
+from django.contrib.auth import get_user_model
+
+
 class TestCourses(TestCase):
-
-
-
     def setUp(self):
+        User = get_user_model()
+
+        self.user = User.objects.create_user(username='testuser', password='testpass')
         self.category = Category.objects.create(name="Тестовая категория")
 
-        Product.objects.create(name="Курс по Python", price=100.00, text="Введение в Python", category=self.category,stock=10)
-        Product.objects.create(name="Продвинутый курс по Python", price=150.00, text="Углубленное изучение Python",category=self.category, stock=10)
-        Product.objects.create(name="Курс по Java", price=120.00, text="Введение в Java", category=self.category, stock=10)
+        self.python_course = Product.objects.create(name="Курс по Python", price=100.00, text="Введение в Python",
+                                                    category=self.category, stock=10)
+        self.advanced_python_course = Product.objects.create(name="Продвинутый курс по Python", price=150.00,
+                                                             text="Углубленное изучение Python", category=self.category,
+                                                             stock=10)
+        self.java_course = Product.objects.create(name="Курс по Java", price=120.00, text="Введение в Java",
+                                                  category=self.category, stock=10)
 
     def test_get_py_courses(self):
-
         python_courses = get_py_courses()
-
-
         self.assertIsNotNone(python_courses, "Функция get_py_courses вернула None")
-
-
         print("Курсы по Python:", python_courses)
-
 
         self.assertEqual(len(python_courses), 2)
         self.assertTrue(all("Python" in course.name for course in python_courses))
+
+    def test_create_review(self):
+        review_text = "Отличный курс!"
+        review = create_review(course_id=self.python_course.id, review_text=review_text, user=self.user)
+        self.assertEqual(review.article, self.python_course)
+        self.assertEqual(review.text, review_text)
+        self.assertEqual(review.user, self.user)
+
+    def test_get_courses(self):
+        result = get_courses()
+        self.assertEqual(list(result), [self.python_course, self.advanced_python_course, self.java_course])
+
+    def test_get_reviews_list(self):
+        create_review(course_id=self.python_course.id, review_text="Отличный курс!", user=self.user)
+        reviews = get_reviews_list()
+        self.assertEqual(reviews.count(), 1)
+        self.assertEqual(reviews.first().text, "Отличный курс!")
 
 
 class ProductTests(TestCase):
@@ -61,7 +79,6 @@ class AuthorBookTests(TestCase):
         author = AuthorFactory.create(name="Автор")
         book1 = BookFactory.create(title="Первая Книга", published_date=date.today())
         book2 = BookFactory.create(title="Вторая Книга", published_date=date.today())
-
 
         author.books.set([book1, book2])
 

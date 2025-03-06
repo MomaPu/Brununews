@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from news.services import get_py_courses, get_3d_courses,get_marketing_courses, get_new_news,get_all_news
+from news.services import get_py_courses, get_3d_courses,get_marketing_courses, get_new_news, create_review, get_courses, get_reviews_list
 from django.core.paginator import Paginator
-from news.models import support
+from news.models import Support
 from sell.models import Product, Reviews
 from django.contrib import messages
 
@@ -27,7 +27,7 @@ def sell(request):
     py_courses = get_py_courses()
     threed_courses = get_3d_courses()
     marketing_courses = get_marketing_courses()
-    print("Courses fetched:", py_courses, threed_courses, marketing_courses)  # Отладочный вывод
+    print("Courses fetched:", py_courses, threed_courses, marketing_courses)  
     context = {
         'py_courses': py_courses,
         'threed_courses': threed_courses,
@@ -37,8 +37,8 @@ def sell(request):
 
 
 def get_news(request):
-    new_news = get_new_news()
-    all_news = get_all_news()
+    new_news = get_new_news()[:3]
+    all_news = get_new_news()[3:]
     paginator = Paginator(all_news, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -55,33 +55,32 @@ def support_view(request):
         mail = request.POST.get('recipient-name')
         text = request.POST.get('message-text')
 
-        support.objects.create(mail=mail, text=text)
+        Support.objects.create(mail=mail, text=text)
 
     return render(request, 'news/support.html')
 
 
 def reviews(request):
-    success_message = ''
     if request.method == 'POST':
-        course_id = request.POST.get('course')
-        review_text = request.POST.get('review')
+        return handle_post_review(request)
 
-        if course_id and review_text:
-            course = Product.objects.get(id=course_id)
-            user = request.user if request.user.is_authenticated else None
-
-            Reviews.objects.create(article=course, text=review_text, user=user)
-
-            success_message = 'Отзыв отправлен!'
-            messages.success(request, success_message)
-
-            return redirect('reviews')
-
-    courses = Product.objects.all()
-    reviews_list = Reviews.objects.select_related('article','user').all()
+    courses = get_courses()
+    reviews_list = get_reviews_list()  
 
     return render(request, 'news/reviews.html', {
         'courses': courses,
         'reviews': reviews_list,
-        'success_message': success_message
+        'success_message': ''
     })
+
+
+def handle_post_review(request):
+    course_id = request.POST.get('course')
+    review_text = request.POST.get('review')
+    user = request.user if request.user.is_authenticated else None
+
+    if course_id and review_text:
+        create_review(course_id, review_text, user)
+        messages.success(request, 'Отзыв отправлен!')
+
+    return redirect('reviews')
