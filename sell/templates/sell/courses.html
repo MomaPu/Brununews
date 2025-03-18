@@ -158,7 +158,7 @@
             <button class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#sidebar-collapse" aria-expanded="true">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="collapsing" id="sidebar-collapse", style="height: 923px;">
+            <div class="collapsing" id="sidebar-collapse" style="height: 923px;">
                 <aside class="sidebar">
                     <ul class="list-unstyled">
                         <li><a href="#"><i class="fas fa-user"></i> Профиль</a></li>
@@ -174,60 +174,89 @@
         <main class="col-md-9 col-12 main-content">
             <header>
                 <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
+
+                <form method="get" action="{% url 'sell_courses' %}" class="mb-4">
+                    <div class="row">
+                        <div class="col-5">
+                            <input type="number" class="form-control" name="min_price" placeholder="Минимальная цена" min="0">
+                        </div>
+                        <div class="col-5">
+                            <input type="number" class="form-control" name="max_price" placeholder="Максимальная цена" min="0">
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-dark">Применить фильтр</button>
+                        </div>
+                        <div class="col-5">
+                            <select name='category' class="form-control">
+                                <option value="">Все категории</option>
+                                <option value="3">three_d</option>
+                                <option value="2">programming</option>
+                                <option value="1">marketing</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+
             </header>
                 <div class="row">
-                    <div class="col-4">
-                    <div class="card h-100">
-                        <img src="https://i.vuzopedia.ru/storage/app/uploads/public/65c/22c/705/65c22c705c9c2245019039.webp" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Программирование Python</h5>
-                            <p class="card-text">Рассмотрим все аспекты программирования на языке Python. Научим создавать Web-Приложения и работать с базами данных. Осталось мест: {{ py_courses.0.stock }} </p>
+                    {% for course in py_courses %}
+                        <div class="col-4">
+                            <div class="card h-100">
+                                <img src="{{ py_courses.0.image.url }}" class="card-img-top" alt="{{ course.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.name }}</h5>
+                                    <p class="card-text">Осталось мест: {{ course.stock }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">С нуля!</li>
+                                    <li class="list-group-item">Курс в подарок!</li>
+                                    <li class="list-group-item">Действуют скидки!</li>
+                                </ul>
+                                <div class="card-body">
+                                    <a href="../courses/py_course" class="card-link">Курс</a>
+                                </div>
+                            </div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">С нуля!</li>
-                            <li class="list-group-item">Курс в подарок!</li>
-                            <li class="list-group-item">Действуют скидки!</li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="../courses/py_course" class="card-link">Курс</a>
+                    {% endfor %}
+                    {% for course in threed_courses %}
+                        <div class="col-4">
+                            <div class="card h-100">
+                                <img src="{{ threed_courses.0.image.url }}" class="card-img-top" alt="{{ course.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.name }}</h5>
+                                    <p class="card-text">Осталось мест: {{ course.stock }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">С нуля!</li>
+                                    <li class="list-group-item">Курс в подарок!</li>
+                                    <li class="list-group-item">Действуют скидки!</li>
+                                </ul>
+                                <div class="card-body">
+                                    <a href="#" class="card-link">Курс</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {% endfor %}
+                    {% for course in marketing_courses %}
+                        <div class="col-4">
+                            <div class="card h-100">
+                                <img src="{{ marketing_courses.0.image.url }}" class="card-img-top" alt="{{ course.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ course.name }}</h5>
+                                    <p class="card-text">Осталось мест: {{ course.stock }}</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">С нуля!</li>
+                                    <li class="list-group-item">Курс в подарок!</li>
+                                    <li class="list-group-item">Действуют скидки!</li>
+                                </ul>
+                                <div class="card-body">
+                                    <a href="#" class="card-link">Курс</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="col-4">
-                    <div class="card h-100">
-                        <img src="https://i.pinimg.com/originals/c9/dc/7a/c9dc7a816306b6ccf3d9256e304906bc.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">3D Дизайн</h5>
-                            <p class="card-text">Научим создавать проекты. Работа с разными рендерами, 3D мейкерами и многое другое в курсе! Осталось мест: {{ threed_courses.0.stock }}</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">С нуля!</li>
-                            <li class="list-group-item">Курс в подарок!</li>
-                            <li class="list-group-item">Действуют скидки!</li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="#" class="card-link">Курс</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-4">
-                    <div class="card h-100">
-                            <img src="https://ucare.timepad.ru/2a59313c-a199-4f32-b5b3-137fa0bbdf2a/poster_event_1277964.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">Маркетинг</h5>
-                            <p class="card-text">Расскажем и научим всем аспектам маркетинга. Курс подходит как для начинающих, так и для повышения квалификации! Осталось мест: {{ marketing_courses.0.stock }}</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">С нуля!</li>
-                            <li class="list-group-item">Курс в подарок!</li>
-                            <li class="list-group-item">Действуют скидки!</li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="#" class="card-link">Курс</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
                 <button type="button" class="btn btn-dark btn-sm floating-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Есть вопросы? Напиши нам!
                 </button>

@@ -1,47 +1,47 @@
 {% extends 'news/base.html' %}
 {% block main %}
-        <!-- Main Content -->
-        <main class="col-md-9 col-12 main-content">
-            <header>
-                <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
-            </header>
-                <div class="card mb-3" style="max-width: 1200px;">
-                    <img src="{{ py_courses.0.image.url }}" class="card-img-top">
-                    <div class="card-body">
-                    <h5 class="card-title">Курсы программирования Python</h5>
-                    <p class="card-text"> Начни свой путь в IT с курса по Python!
-                        <br>🚀 Что тебя ждет:
-                        <br>Изучение основ программирования и языка Python с нуля.
-                       <br> Практические задания для закрепления знаний.
-                        <br>Создание собственных веб-приложений и работа с базами данных.
-                        <br>🎁 Бонусы:
-                        <br>Сертификат о завершении курса.
-                        <br>Участие в регулярных вебинарах и Q&A с преподавателями.
-                        <br>Специальные предложения на дальнейшие курсы.
-                        <br>🔗 Запишись на курс уже сегодня и открой новые горизонты в программировании!
-                        <br>Не упусти возможность стать востребованным специалистом в мире высоких технологий!
-                        <p class="card-text">Осталось мест на запись: {{ py_courses.0.stock }}</p>
-                    </div>
-                    </p>
-                     <p class="card-text"><small class="text-muted">    Категория: {{ py_courses.0.category.name}} <br>Цена: {{ py_courses.0.price}}руб.</small></p>
-                    <div class="text-left">
-                        <button id="buyButton" type="button" class="btn btn-primary">Купить</button>
-                    </div>
+<!-- Main Content -->
+<main class="col-md-9 col-12 main-content">
+    <header>
+        <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
+    </header>
+    <div class="card mb-3" style="max-width: 1200px;">
+        {% for course in py_courses %}
+            <img src="{{ course.image.url }}" class="card-img-top" alt="Курс {{ course.title }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">Начни свой путь в IT с курса по Python!
+                    <br>🚀 Что тебя ждет:
+                    <br>Изучение основ программирования и языка Python с нуля.
+                    <br>Практические задания для закрепления знаний.
+                    <br>Создание собственных веб-приложений и работа с базами данных.
+                    <br>🎁 Бонусы:
+                    <br>Сертификат о завершении курса.
+                    <br>Участие в регулярных вебинарах и Q&A с преподавателями.
+                    <br>Специальные предложения на дальнейшие курсы.
+                    <br>🔗 Запишись на курс уже сегодня и открой новые горизонты в программировании!
+                    <br>Не упусти возможность стать востребованным специалистом в мире высоких технологий!
+                </p>
+                <p class="card-text">Осталось мест на запись: {{ course.stock }}</p>
+                <p class="card-text"><small class="text-muted">Категория: {{ course.category.name }} <br>Цена: {{ course.price }} руб.</small></p>
+                <div class="text-left">
+                    <button id="buyButton-{{ forloop.counter }}" type="button" class="btn btn-primary">Купить</button>
                 </div>
-                    <script>
-                        document.getElementById('buyButton').addEventListener('click', function() {
-                            var stock = {{ py_courses.stock }};
-                            if (stock = 0) {
-                                alert('Ошибка: Нет доступных мест для записи.');
-                            } else {
-                                alert('Поздравляем с покупкой курса!');
-                            }
-                        });
-                    </script>
-        </main>
+            </div>
+            <script>
+                document.getElementById('buyButton-{{ forloop.counter }}').addEventListener('click', function() {
+                    var stock = {{ course.stock }};
+                    if (stock == 0) { // Используйте оператор сравнения
+                        alert('Ошибка: Нет доступных мест для записи.');
+                    } else {
+                        alert('Поздравляем с покупкой курса!');
+                    }
+                });
+            </script>
+        {% endfor %}
     </div>
     <button type="button" class="btn btn-dark btn-sm floating-button" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Есть вопросы? Напиши нам!
     </button>
-</div>
+</main>
 {% endblock %}

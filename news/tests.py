@@ -2,8 +2,9 @@ from datetime import date
 from django.test import TestCase
 from news.factories import ProductFactory, CategoryFactory, AuthorFactory, BookFactory
 from sell.models import Product, Category
-from news.services import get_py_courses, create_review, get_courses, get_reviews_list
+from news.services import create_review, get_courses, get_reviews_list, get_courses_by_category
 from django.contrib.auth import get_user_model
+
 
 
 class TestCourses(TestCase):
@@ -21,13 +22,14 @@ class TestCourses(TestCase):
         self.java_course = Product.objects.create(name="Курс по Java", price=120.00, text="Введение в Java",
                                                   category=self.category, stock=10)
 
-    def test_get_py_courses(self):
-        python_courses = get_py_courses()
-        self.assertIsNotNone(python_courses, "Функция get_py_courses вернула None")
-        print("Курсы по Python:", python_courses)
+    def test_get_courses_by_valid_categories(self):
+        courses = get_courses_by_category(['Python', '3D-Дизайн'])
+        self.assertEqual(len(courses), 2)
 
-        self.assertEqual(len(python_courses), 2)
-        self.assertTrue(all("Python" in course.name for course in python_courses))
+    def test_get_courses_by_invalid_category(self):
+        with self.assertRaises(ValueError):
+            get_courses_by_category(['Неподдерживаемая категория'])
+
 
     def test_create_review(self):
         review_text = "Отличный курс!"

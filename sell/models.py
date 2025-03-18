@@ -2,6 +2,7 @@ from django.db import models
 
 class Category(models.Model):
 
+    objects = None
     name = models.CharField("Наименование",max_length=100, unique=True)
 
 
