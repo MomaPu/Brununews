@@ -10,16 +10,20 @@ import logging
 logger = logging.getLogger(__name__)
 
 COURSE_CHOICES = [('', 'Все категории')]
+
 for category in Category.objects.all():
+
     COURSE_CHOICES.append((category.name, category.name))
 
 
 def index(request):
+
     print("Courses fetched:")
     return render(request, 'news/index.html')
 
 
 def get_all_courses(request):
+
     all_courses = get_courses_by_category(list(COURSE_CHOICES.keys()))
 
     print("All Courses fetched:", all_courses)
@@ -41,7 +45,9 @@ def get_all_courses(request):
 
 
 def sell(request):
+
     print("COURSE_CHOICES:", COURSE_CHOICES)
+
     form = CourseFilterForm(request.GET)
 
     if form.is_valid():
@@ -54,7 +60,6 @@ def sell(request):
 
         filtered_courses = get_courses_by_category(category)
 
-        # Логика фильтрации по цене
         if min_price is not None:
             filtered_courses = filtered_courses.filter(price__gte=min_price)
         if max_price is not None:
@@ -73,6 +78,7 @@ def sell(request):
 
     return render(request, 'sell/courses.html', context)
 def get_news(request):
+
     new_news = get_new_news()[:3]
     all_news = get_new_news()[3:]
 
@@ -91,6 +97,7 @@ def get_news(request):
 
 
 def support_view(request):
+
     if request.method == 'POST':
         mail = request.POST.get('recipient-name')
         text = request.POST.get('message-text')
@@ -101,7 +108,9 @@ def support_view(request):
 
 
 def reviews(request):
+
     if request.method == 'POST':
+
         return handle_post_review(request)
 
     courses = get_courses_by_category(list(COURSE_CHOICES.values()))  # Подобрать курсы здесь
@@ -115,6 +124,7 @@ def reviews(request):
 
 
 def handle_post_review(request):
+
     course_id = request.POST.get('course')
     review_text = request.POST.get('review')
     user = request.user if request.user.is_authenticated else None

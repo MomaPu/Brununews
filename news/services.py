@@ -4,11 +4,14 @@ from django.shortcuts import get_object_or_404
 from sell.models import Category
 
 COURSE_CHOICES = [('', 'Все категории')]
+
 for category in Category.objects.all():
+
     COURSE_CHOICES.append((category.name, category.name))
 
 
 def get_courses_by_category(category_id):
+
     if not category_id:
         return Product.objects.all()
     try:
