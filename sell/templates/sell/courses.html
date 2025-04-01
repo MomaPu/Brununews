@@ -174,8 +174,8 @@
         <main class="col-md-9 col-12 main-content">
             <header>
                 <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
-
-                <form method="get" action="{% url 'sell_courses' %}" class="mb-4">
+                <h2>Отладка данных формы</h2>
+                <form method="get" action="{% url 'find_courses' %}" class="mb-4">
                     <div class="row">
                         <div class="col-5">
                             <input type="number" class="form-control" name="min_price" placeholder="Минимальная цена" min="0">
@@ -193,6 +193,12 @@
                                 <option value="2">Программирование</option>
                                 <option value="1">Маркетинг</option>
                             </select>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="with_reviews_only" id="with_reviews_only">
+                                <label class="form-check-label" for="with_reviews_only">Только с отзывами</label>
+                            </div>
                         </div>
                     </div>
                 </form>

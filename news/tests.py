@@ -2,7 +2,7 @@ from datetime import date
 from django.test import TestCase
 from news.factories import ProductFactory, CategoryFactory, AuthorFactory, BookFactory
 from sell.models import Product, Category
-from news.services import create_review, get_courses, get_reviews_list, get_courses_by_category
+from news.services import create_review, get_courses, get_reviews_list
 from django.contrib.auth import get_user_model
 
 
@@ -22,13 +22,6 @@ class TestCourses(TestCase):
         self.java_course = Product.objects.create(name="Курс по Java", price=120.00, text="Введение в Java",
                                                   category=self.category, stock=10)
 
-    def test_get_courses_by_valid_categories(self):
-        courses = get_courses_by_category(['Python', '3D-Дизайн'])
-        self.assertEqual(len(courses), 2)
-
-    def test_get_courses_by_invalid_category(self):
-        with self.assertRaises(ValueError):
-            get_courses_by_category(['Неподдерживаемая категория'])
 
 
     def test_create_review(self):

@@ -1,21 +1,21 @@
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.contrib import messages
 from news.models import Support
-from sell.models import Product, Category
-from news.services import get_courses_by_category, get_new_news, create_review, get_reviews_list
-from news.forms import CourseFilterForm
+from sell.models import Product, Reviews
+from news.services import CourseFilter, get_new_news, create_review
+from news.forms import CourseFilterForm, CustomUserCreationForm
 import logging
 
 logger = logging.getLogger(__name__)
 
-COURSE_CHOICES = [('', 'Все категории')]
-
-for category in Category.objects.all():
-
-    COURSE_CHOICES.append((category.name, category.name))
-
-
+COURSE_CHOICES = {
+    '1': 'Маркетинг',
+    '2': 'Программирование',
+    '3': '3D-Дизайн',
+}
 def index(request):
 
     print("Courses fetched:")
@@ -24,7 +24,7 @@ def index(request):
 
 def get_all_courses(request):
 
-    all_courses = get_courses_by_category(list(COURSE_CHOICES.keys()))
+    all_courses = list(COURSE_CHOICES.keys())
 
     print("All Courses fetched:", all_courses)
 
@@ -44,31 +44,16 @@ def get_all_courses(request):
     return render(request, 'news/Python_courses.html', context)
 
 
-def sell(request):
-
-    print("COURSE_CHOICES:", COURSE_CHOICES)
-
+def find_courses(request):
     form = CourseFilterForm(request.GET)
+    filtered_courses = Product.objects.all()
 
     if form.is_valid():
-        min_price = form.cleaned_data.get('min_price')
-        max_price = form.cleaned_data.get('max_price')
-        category = form.cleaned_data.get('category')
-
-        print("Selected category:", category)
-        print("Max", max_price)
-
-        filtered_courses = get_courses_by_category(category)
-
-        if min_price is not None:
-            filtered_courses = filtered_courses.filter(price__gte=min_price)
-        if max_price is not None:
-            filtered_courses = filtered_courses.filter(price__lte=max_price)
-
+        course_filter = CourseFilter(**form.cleaned_data)
+        filtered_courses = course_filter.find()
     else:
-        filtered_courses = Product.objects.all()
         print("Form errors:", form.errors)
-        #
+
     context = {
         'py_courses': [course for course in filtered_courses if "Python" in course.name],
         'threed_courses': [course for course in filtered_courses if "3D-Дизайн" in course.name],
@@ -113,8 +98,8 @@ def reviews(request):
 
         return handle_post_review(request)
 
-    courses = get_courses_by_category(list(COURSE_CHOICES.values()))  # Подобрать курсы здесь
-    reviews_list = get_reviews_list()
+    courses = Product.objects.all()
+    reviews_list = Reviews.objects.all().select_related('product', 'user')
 
     return render(request, 'news/reviews.html', {
         'courses': courses,
@@ -124,13 +109,25 @@ def reviews(request):
 
 
 def handle_post_review(request):
-
     course_id = request.POST.get('course')
     review_text = request.POST.get('review')
     user = request.user if request.user.is_authenticated else None
 
     if course_id and review_text:
-        create_review(course_id, review_text, user)
+        with transaction.atomic():
+            create_review(course_id, review_text, user)
         messages.success(request, 'Отзыв отправлен!')
 
     return redirect('reviews')
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Аккаунт для {username} успешно создан!  Теперь вы можете войти.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})

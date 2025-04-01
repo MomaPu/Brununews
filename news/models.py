@@ -40,3 +40,4 @@ class News(models.Model):
 class Support(models.Model):
     mail = models.TextField("Почта", max_length=64)
     text = models.TextField("Текст сообщения  ")
+

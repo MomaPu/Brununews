@@ -19,7 +19,7 @@ class Product(models.Model):
         return self.name
 
 class Reviews(models.Model):
-    article = models.ForeignKey('sell.Product', related_name='Отзыв', on_delete=models.CASCADE )
+    product = models.ForeignKey('sell.Product', related_name='Отзыв', on_delete=models.CASCADE )
     text = models.TextField('Текст отзыва')
     user = models.ForeignKey('users.User', related_name='Отзыв', null = True, on_delete=models.SET_NULL)
     is_anon = models.BooleanField(default = False)

@@ -1,5 +1,7 @@
 from django import forms
 from sell.models import Reviews, Category
+from django.contrib.auth.forms import UserCreationForm
+from users.models import User
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -8,10 +10,13 @@ class CommentForm(forms.ModelForm):
 
 
 class CourseFilterForm(forms.Form):
-    min_price = forms.DecimalField(required=False, label='Минимальная цена')
-    max_price = forms.DecimalField(required=False, label='Максимальная цена')
-    category = forms.ChoiceField(choices=[], required=False, label='Выберите категорию')
+    min_price = forms.IntegerField(required=False, label='Минимальная цена')
+    max_price = forms.IntegerField(required=False, label='Максимальная цена')
+    category = forms.ChoiceField(choices=[('', 'Все категории')] + [(str(c.id), c.name) for c in Category.objects.all()],
+                                   required=False, label='Категория')
+    with_reviews_only = forms.BooleanField(required=False, label='Только с отзывами')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['category'].choices = [(category.id, category.name) for category in Category.objects.all()]
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ('username',)
