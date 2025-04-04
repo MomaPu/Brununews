@@ -16,7 +16,3 @@ class CourseFilterForm(forms.Form):
                                    required=False, label='Категория')
     with_reviews_only = forms.BooleanField(required=False, label='Только с отзывами')
 
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ('username',)

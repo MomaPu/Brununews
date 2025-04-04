@@ -31,3 +31,13 @@ class Reviews(models.Model):
     def __self__(self):
         username = self.user.username if self.user is not None else 'Анонимный пользователь'
         return f"{self.artice.title}/{self.user.username}"
+
+class Coaches(models.Model):
+    name = models.CharField("Название", max_length=64)
+    classification = models.TextField("Классификация",max_length=64)
+    text = models.TextField("Описание")
+    image = models.ImageField("Изображение", upload_to='products/images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+

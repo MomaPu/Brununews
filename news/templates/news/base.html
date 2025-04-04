@@ -117,7 +117,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark">
                         <li><a class="dropdown-item" href="{% url 'find_courses' %}">Курсы</a></li>
-                        <li><a class="dropdown-item" href="#">Преподаватели</a></li>
+                        <li><a class="dropdown-item" href="{% url 'coach_info' %}">Преподаватели</a></li>
                         <li><a class="dropdown-item" href="{% url 'reviews' %}">Отзывы</a></li>
                     </ul>
                 </li>
@@ -148,7 +148,7 @@
                             <li><a href="{% url 'login' %}?next={{ request.path }}">Авторизация</a></li>
                             <li><a href="{% url 'register' %}">Регистрация</a></li>
                         {% endif %}
-                        <li><a href="#"><i class="fas fa-user"></i> Профиль</a></li>
+                        <li><a href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Профиль</a></li>
                         <li><a href="#"><i class="fas fa-envelope"></i> Сообщения</a></li>
                         <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Тренинги</a></li>
                         <li><a href="#"><i class="fas fa-headset"></i> Поддержка</a></li>

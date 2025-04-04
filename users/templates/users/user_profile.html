@@ -1,0 +1,20 @@
+{% extends 'news/base.html' %}
+{% block main %}
+<h2>Профиль пользователя</h2>
+<p><strong>Имя:</strong> {{ username }}</p>
+<p><strong>Электронная почта:</strong> {{ email }}</p>
+
+<h3>Купленные курсы</h3>
+<ul>
+    {% for user_product in user_products %}
+        <img src="{{ user_product.product.image.url }}" class="card-img-top" style="width: 300px; height: auto;">
+        <li>
+            <a href="#">
+                {{ user_product.product.name }}
+            </a> - {{ user_product.purchase_at }}
+        </li>
+    {% empty %}
+        <li>Нет купленных курсов.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

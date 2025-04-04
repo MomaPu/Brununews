@@ -1,12 +1,11 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.db import transaction
 from django.contrib import messages
-from news.models import Support
+from news.models import Support, News
 from sell.models import Product, Reviews
 from news.services import CourseFilter, get_new_news, create_review
-from news.forms import CourseFilterForm, CustomUserCreationForm
+from news.forms import CourseFilterForm
 import logging
 
 logger = logging.getLogger(__name__)
@@ -120,14 +119,7 @@ def handle_post_review(request):
 
     return redirect('reviews')
 
-def register(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Аккаунт для {username} успешно создан!  Теперь вы можете войти.')
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+def news_detail(request, id):
+    news_item = get_object_or_404(News, id=id)
+    return render(request, 'news/news_title.html', {'news': news_item})
+

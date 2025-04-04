@@ -1,0 +1,13 @@
+{% extends 'news/base.html' %}
+
+{% block main %}
+<div class="col">
+    <div class="card" style="width: 45rem;">
+        <img src="{{ news.image.url }}" class="card-img-top" alt="{{ news.title }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ news.title }}</h5>
+            <p class="card-text">{{ news.text }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

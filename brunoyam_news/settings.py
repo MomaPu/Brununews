@@ -60,7 +60,7 @@ ROOT_URLCONF = 'brunoyam_news.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'users/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,10 +136,15 @@ AUTH_USER_MODEL = 'users.User'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'products/images'
 
-LOGIN_REDIRECT_URL = '/'
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 LOGIN_REDIRECT_URL = '/root/index'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your_email@example.com'
+EMAIL_HOST_PASSWORD = 'your_email_password'
