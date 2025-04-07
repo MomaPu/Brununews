@@ -1,5 +1,5 @@
 from django.urls import path, include
-from users.views import register, user_profile
+from users.views import register, user_profile, support_view
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth.views import LogoutView
@@ -14,6 +14,8 @@ urlpatterns = [
 	path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration//password_reset_done.html'), name='password_reset_done'),
 	path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration//password_reset_confirm.html'), name='password_reset_confirm'),
 	path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='registration//password_reset_complete.html'), name='password_reset_complete'),
+	path('accounts/logout/', LogoutView.as_view(next_page='get_news'), name='logout'),
+	path('support/', support_view, name='support_view'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

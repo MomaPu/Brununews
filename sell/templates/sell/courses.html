@@ -130,7 +130,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="../index">Brunoyam</a>
+    <a class="navbar-brand" href="{% url 'get_news' %}">Brunoyam</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDarkDropdown" aria-controls="navbarNavDarkDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -174,7 +174,6 @@
         <main class="col-md-9 col-12 main-content">
             <header>
                 <h1><span class="badge" style="background-color: #293133; padding: 10px 15px; border-radius: 10px;">Курсы от Бруноям</span></h1>
-                <h2>Отладка данных формы</h2>
                 <form method="get" action="{% url 'find_courses' %}" class="mb-4">
                     <div class="row">
                         <div class="col-5">
